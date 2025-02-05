@@ -1,0 +1,92 @@
+{
+  "className": "javax.management.BadAttributeValueExpException",
+  "fieldName": null,
+  "defaultValue": null,
+  "fields": [
+    {
+      "className": "org.apache.commons.collections.keyvalue.TiedMapEntry",
+      "fieldName": "val",
+      "defaultValue": null,
+      "fields": [
+        {
+          "className": "org.apache.commons.collections.map.LazyMap",
+          "fieldName": "map",
+          "defaultValue": null,
+          "fields": [
+            {
+              "className": "org.apache.commons.collections.functors.ChainedTransformer",
+                    "fieldName": "factory",
+                    "defaultValue": null,
+                    "fields": [
+                      {
+                        "className": "org.apache.commons.collections.Transformer[]",
+                        "fieldName": "iTransformers",
+                        "defaultValue": null,
+                        "fields": [
+                          {
+                            "className": "org.apache.commons.collections.functors.ConstantTransformer",
+                            "fieldName": null,
+                            "defaultValue": null,
+                            "fields": [
+                              {
+                                "className": "java.lang.Object",
+                                "fieldName": "iConstant",
+                                "defaultValue": null,
+                                "fields": []
+                              }
+                            ]
+                          },
+                          {
+                            "className": "org.apache.commons.collections.functors.InvokerTransformer",
+                            "fieldName": null,
+                            "defaultValue": null,
+                            "fields": [
+                              {
+                                "className": "java.lang.String",
+                                "fieldName": "iMethodName",
+                                "defaultValue": null,
+                                "fields": []
+                              },
+                              {
+                                "className": "java.lang.Class[]",
+                                "fieldName": "iParamTypes",
+                                "defaultValue": null,
+                                "fields": []
+                              },
+                              {
+                                "className": "java.lang.Object[]",
+                                "fieldName": "iArgs",
+                                "defaultValue": null,
+                                "fields": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+            },
+            {
+              "className": "java.util.HashMap",
+              "fieldName": "map",
+              "defaultValue" : null,
+              "fields": [
+                {
+                  "className": "float",
+                  "fieldName": "loadFactor",
+                  "defaultValue": null,
+                  "fields": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "className": "java.lang.Object",
+          "fieldName": "key",
+          "defaultValue": null,
+          "fields": []
+        }
+      ]
+    }
+  ]
+}

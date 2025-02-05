@@ -63,8 +63,8 @@ public class SerdeFuzzerTest {
             byteArrayInputStream.close();
             objectInputStream.close();
         } catch (Exception e) {
-            System.out.println("反序列化时发生异常: " + e.getMessage());
-            e.printStackTrace();
+            // System.out.println("反序列化时发生异常: " + e.getMessage());
+            // e.printStackTrace();
         }
 
         // 检验插桩， 若触发插桩，则 isExploitable = true;
@@ -173,7 +173,7 @@ public class SerdeFuzzerTest {
             objectInputStream.close();
         } catch (Exception e) {
             // 记录反序列化时的异常
-            System.out.println("反序列化时发生异常: " + e.getMessage());
+            // System.out.println("反序列化时发生异常: " + e.getMessage());
         }
 
         String capturedOutput = captureOutput.getCapturedOutput().trim();

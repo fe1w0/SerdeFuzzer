@@ -1,0 +1,5 @@
+javax.management.BadAttributeValueExpException.readObject()
+org.apache.commons.collections.keyvalue.TiedMapEntry.toString()
+org.apache.commons.collections.map.LazyMap.get()
+org.apache.commons.collections.functors.ChainedTransformer.transform()
+org.apache.commons.collections.functors.InvokerTransformer.transform()
