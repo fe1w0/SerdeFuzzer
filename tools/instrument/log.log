@@ -1,0 +1,38 @@
+11:38:11.326 instrument.utils.CSVReader.convertDescription INFO: Prepare Instrumented Sinks: clojure/core$comp$fn__4727#invoke#()Ljava/lang/Object;
+11:38:11.327 instrument.utils.CSVReader.convertDescription INFO: Prepare Instrumented Sinks: clojure/main$eval_opt#invoke#(Ljava/lang/Object;)Ljava/lang/Object;
+11:38:11.541 instrument.utils.JarModifier.newCode INFO: Instrument: clojure/core$comp$fn__4727.invoke ()Ljava/lang/Object;
+11:38:11.545 instrument.utils.JarModifier.printInstructions INFO: FieldInsnNode: GETSTATIC owner=java/lang/System name=out desc=Ljava/io/PrintStream;
+11:38:11.546 instrument.utils.JarModifier.printInstructions INFO: LdcInsnNode: LDC cst=SerdeFuzzer@fe1w0
+11:38:11.550 instrument.utils.JarModifier.printInstructions INFO: MethodInsnNode: INVOKEVIRTUAL owner=java/io/PrintStream name=println desc=(Ljava/lang/String;)V itf=false
+11:38:11.550 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.LabelNode@28952dea
+11:38:11.550 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.LineNumberNode@5a9800f8
+11:38:11.550 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.VarInsnNode@143d9a93
+11:38:11.550 instrument.utils.JarModifier.printInstructions INFO: FieldInsnNode: GETFIELD owner=clojure/core$comp$fn__4727 name=f desc=Ljava/lang/Object;
+11:38:11.550 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.LabelNode@40226788
+11:38:11.550 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.LineNumberNode@4159e81b
+11:38:11.550 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.TypeInsnNode@5b5caf08
+11:38:11.550 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.VarInsnNode@23cd4ff2
+11:38:11.550 instrument.utils.JarModifier.printInstructions INFO: FieldInsnNode: GETFIELD owner=clojure/core$comp$fn__4727 name=g desc=Ljava/lang/Object;
+11:38:11.550 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.LabelNode@70807224
+11:38:11.550 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.LineNumberNode@7e97551f
+11:38:11.550 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.TypeInsnNode@400d912a
+11:38:11.551 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.LabelNode@9f6e406
+11:38:11.551 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.LineNumberNode@7a94b64e
+11:38:11.551 instrument.utils.JarModifier.printInstructions INFO: MethodInsnNode: INVOKEINTERFACE owner=clojure/lang/IFn name=invoke desc=()Ljava/lang/Object; itf=true
+11:38:11.551 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.LabelNode@3e6f3bae
+11:38:11.551 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.LineNumberNode@12477988
+11:38:11.551 instrument.utils.JarModifier.printInstructions INFO: MethodInsnNode: INVOKEINTERFACE owner=clojure/lang/IFn name=invoke desc=(Ljava/lang/Object;)Ljava/lang/Object; itf=true
+11:38:11.551 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.LabelNode@2caf6912
+11:38:11.551 instrument.utils.JarModifier.printInstructions INFO: InsnNode: ARETURN
+11:38:11.551 instrument.utils.JarModifier.newCode INFO: Instrument: clojure/main$eval_opt.invoke (Ljava/lang/Object;)Ljava/lang/Object;
+11:38:11.551 instrument.utils.JarModifier.printInstructions INFO: FieldInsnNode: GETSTATIC owner=java/lang/System name=out desc=Ljava/io/PrintStream;
+11:38:11.551 instrument.utils.JarModifier.printInstructions INFO: LdcInsnNode: LDC cst=SerdeFuzzer@fe1w0
+11:38:11.551 instrument.utils.JarModifier.printInstructions INFO: MethodInsnNode: INVOKEVIRTUAL owner=java/io/PrintStream name=println desc=(Ljava/lang/String;)V itf=false
+11:38:11.551 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.VarInsnNode@34237b90
+11:38:11.551 instrument.utils.JarModifier.printInstructions INFO: InsnNode: ACONST_NULL
+11:38:11.552 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.VarInsnNode@1d01dfa5
+11:38:11.552 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.LabelNode@4a31c2ee
+11:38:11.552 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.LineNumberNode@d400943
+11:38:11.552 instrument.utils.JarModifier.printInstructions INFO: MethodInsnNode: INVOKESTATIC owner=clojure/main$eval_opt name=invokeStatic desc=(Ljava/lang/Object;)Ljava/lang/Object; itf=false
+11:38:11.552 instrument.utils.JarModifier.printInstructions INFO: InsnNode: ARETURN
+11:38:12.857 instrument.Transform.run INFO: Finish Instrument.

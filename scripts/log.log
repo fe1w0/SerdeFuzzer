@@ -1,0 +1,29 @@
+11:38:22.878 instrument.utils.CSVReader.convertDescription INFO: Prepare Instrumented Sinks: sources/demo/EvilObject#evil#(Ljava/lang/String;)V
+11:38:22.890 instrument.utils.JarModifier.newCode INFO: Instrument: sources/demo/EvilObject.evil (Ljava/lang/String;)V
+11:38:22.893 instrument.utils.JarModifier.printInstructions INFO: FieldInsnNode: GETSTATIC owner=java/lang/System name=out desc=Ljava/io/PrintStream;
+11:38:22.894 instrument.utils.JarModifier.printInstructions INFO: LdcInsnNode: LDC cst=SerdeFuzzer@fe1w0
+11:38:22.897 instrument.utils.JarModifier.printInstructions INFO: MethodInsnNode: INVOKEVIRTUAL owner=java/io/PrintStream name=println desc=(Ljava/lang/String;)V itf=false
+11:38:22.898 instrument.utils.JarModifier.printInstructions INFO: FieldInsnNode: GETSTATIC owner=java/lang/System name=out desc=Ljava/io/PrintStream;
+11:38:22.898 instrument.utils.JarModifier.printInstructions INFO: LdcInsnNode: LDC cst=SerdeFuzzer@fe1w0
+11:38:22.898 instrument.utils.JarModifier.printInstructions INFO: MethodInsnNode: INVOKEVIRTUAL owner=java/io/PrintStream name=println desc=(Ljava/lang/String;)V itf=false
+11:38:22.898 instrument.utils.JarModifier.printInstructions INFO: FieldInsnNode: GETSTATIC owner=java/lang/System name=out desc=Ljava/io/PrintStream;
+11:38:22.898 instrument.utils.JarModifier.printInstructions INFO: LdcInsnNode: LDC cst=SerdeFuzzer@fe1w0
+11:38:22.898 instrument.utils.JarModifier.printInstructions INFO: MethodInsnNode: INVOKEVIRTUAL owner=java/io/PrintStream name=println desc=(Ljava/lang/String;)V itf=false
+11:38:22.898 instrument.utils.JarModifier.printInstructions INFO: FieldInsnNode: GETSTATIC owner=java/lang/System name=out desc=Ljava/io/PrintStream;
+11:38:22.898 instrument.utils.JarModifier.printInstructions INFO: LdcInsnNode: LDC cst=SerdeFuzzer@fe1w0
+11:38:22.898 instrument.utils.JarModifier.printInstructions INFO: MethodInsnNode: INVOKEVIRTUAL owner=java/io/PrintStream name=println desc=(Ljava/lang/String;)V itf=false
+11:38:22.898 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.LabelNode@68bbe345
+11:38:22.898 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.LineNumberNode@30b8a058
+11:38:22.898 instrument.utils.JarModifier.printInstructions INFO: FieldInsnNode: GETSTATIC owner=java/lang/System name=out desc=Ljava/io/PrintStream;
+11:38:22.898 instrument.utils.JarModifier.printInstructions INFO: LdcInsnNode: LDC cst=Eval
+11:38:22.898 instrument.utils.JarModifier.printInstructions INFO: MethodInsnNode: INVOKEVIRTUAL owner=java/io/PrintStream name=println desc=(Ljava/lang/String;)V itf=false
+11:38:22.898 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.LabelNode@7494e528
+11:38:22.898 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.LineNumberNode@4bbfb90a
+11:38:22.898 instrument.utils.JarModifier.printInstructions INFO: FieldInsnNode: GETSTATIC owner=java/lang/System name=out desc=Ljava/io/PrintStream;
+11:38:22.898 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.VarInsnNode@7c29daf3
+11:38:22.898 instrument.utils.JarModifier.printInstructions INFO: MethodInsnNode: INVOKEVIRTUAL owner=java/io/PrintStream name=println desc=(Ljava/lang/String;)V itf=false
+11:38:22.898 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.LabelNode@9660f4e
+11:38:22.898 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.LineNumberNode@5a8806ef
+11:38:22.898 instrument.utils.JarModifier.printInstructions INFO: InsnNode: RETURN
+11:38:22.899 instrument.utils.JarModifier.printInstructions INFO: org.objectweb.asm.tree.LabelNode@5e853265
+11:38:22.917 instrument.Transform.run INFO: Finish Instrument.

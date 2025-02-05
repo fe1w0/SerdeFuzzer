@@ -1,0 +1,7 @@
+"java.util.PriorityQueue.readObject()",
+"java.util.PriorityQueue.heapify()",
+"java.util.PriorityQueue.siftDown()",
+"java.util.PriorityQueue.siftDownUsingComparator()",
+"org.apache.commons.collections4.comparators.TransformingComparator.compare()",
+"org.apache.commons.collections4.functors.ConstantTransformer.transform()",
+"org.apache.commons.collections4.functors.InvokerTransformer.transform()"

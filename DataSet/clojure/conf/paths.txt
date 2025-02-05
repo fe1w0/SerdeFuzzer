@@ -1,0 +1,4 @@
+java.util.HashMap.readObject()
+clojure.inspector.proxy$javax.swing.table.AbstractTableModel$ff19274a.hashCode()
+clojure.core$comp$fn__4727.invoke()
+clojure.main$eval_opt.invoke()

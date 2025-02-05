@@ -1,0 +1,84 @@
+{
+  "className": "java.util.PriorityQueue",
+  "fieldName": null,
+  "defaultValue": null,
+  "fields": [
+    {
+      "className": "java.lang.Object[]",
+      "fieldName": "queue",
+      "defaultValue": null,
+      "fields": []
+    },
+    {
+      "className": "int",
+      "fieldName": "size",
+      "defaultValue": null,
+      "fields": []
+    },
+    {
+      "className": "org.apache.commons.collections4.comparators.TransformingComparator",
+      "fieldName": "comparator",
+      "defaultValue": null,
+      "fields": [
+        {
+          "className": "org.apache.commons.collections4.functors.ChainedTransformer",
+          "fieldName": "transformer",
+          "defaultValue": null,
+          "fields": [
+            {
+              "className": "org.apache.commons.collections4.Transformer[]",
+              "fieldName": "iTransformers",
+              "defaultValue": null,
+              "fields": [
+                {
+                  "className": "org.apache.commons.collections4.functors.ConstantTransformer",
+                  "fieldName": null,
+                  "defaultValue": null,
+                  "fields": [
+                    {
+                      "className": "java.lang.Object",
+                      "fieldName": "iConstant",
+                      "defaultValue": null,
+                      "fields": []
+                    }
+                  ]
+                },
+                {
+                  "className": "org.apache.commons.collections4.functors.InvokerTransformer",
+                  "fieldName": null,
+                  "defaultValue": null,
+                  "fields": [
+                    {
+                      "className": "java.lang.String",
+                      "fieldName": "iMethodName",
+                      "defaultValue": null,
+                      "fields": []
+                    },
+                    {
+                      "className": "java.lang.Class[]",
+                      "fieldName": "iParamTypes",
+                      "defaultValue": null,
+                      "fields": []
+                    },
+                    {
+                      "className": "java.lang.Object[]",
+                      "fieldName": "iArgs",
+                      "defaultValue": null,
+                      "fields": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "className": "org.apache.commons.collections4.comparators.ComparableComparator",
+          "fieldName": "decorated",
+          "defaultValue": null,
+          "fields": []
+        }
+      ]
+    }
+  ]
+}

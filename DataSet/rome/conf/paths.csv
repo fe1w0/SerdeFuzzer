@@ -1,0 +1,4 @@
+java.util.HashMap	readObject	(Ljava/io/ObjectInputStream;)V
+com.sun.syndication.feed.impl.ObjectBean	hashCode	()I
+com.sun.syndication.feed.impl.EqualsBean	beanHashCode	()I
+com.sun.syndication.feed.impl.ToStringBean	toString	()Ljava/lang/String;

@@ -1,0 +1,11 @@
+java.util.HashSet	readObject	(Ljava/io/ObjectInputStream;)V
+java.util.HashMap	put	(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+java.util.HashMap	hash	(Ljava/lang/Object;)I
+clojure.lang.PersistentQueue	hashCode	()I
+clojure.lang.Iterate	first	()Ljava/lang/Object;
+clojure.core$partial$fn__5920	invoke	(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+clojure.core$apply	invoke	(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+clojure.core$apply	invokeStatic	(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Lclojure/lang/ISeq;)Ljava/lang/Object;
+clojure.lang.RestFn	applyTo	(Lclojure/lang/ISeq;)Ljava/lang/Object;
+clojure.java.process$start	doInvoke	(Ljava/lang/Object;)Ljava/lang/Object;
+clojure.java.process$start	invokeStatic	(Lclojure/lang/ISeq;)Ljava/lang/Object;

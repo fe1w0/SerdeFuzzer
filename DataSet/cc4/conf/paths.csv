@@ -1,0 +1,7 @@
+java.util.PriorityQueue	readObject	(Ljava/io/ObjectInputStream;)V
+java.util.PriorityQueue	heapify	()V
+java.util.PriorityQueue	siftDown	(ILjava/lang/Object;)V
+java.util.PriorityQueue	siftDownUsingComparator	(ILjava/lang/Object;[Ljava/lang/Object;ILjava/util/Comparator;)V
+org.apache.commons.collections4.comparators.TransformingComparator	compare	(Ljava/lang/Object;Ljava/lang/Object;)I
+org.apache.commons.collections4.functors.ConstantTransformer	transform	(Ljava/lang/Object;)Ljava/lang/Object;
+org.apache.commons.collections4.functors.InstantiateTransformer	transform	(Ljava/lang/Object;)Ljava/lang/Object;

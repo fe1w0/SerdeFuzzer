@@ -1,0 +1,4 @@
+java.util.HashMap	readObject	(Ljava/io/ObjectInputStream;)V
+clojure.inspector.proxy$javax.swing.table.AbstractTableModel$ff19274a	hashCode	()I
+clojure.core$comp$fn__4727	invoke	()Ljava/lang/Object;
+clojure.main$eval_opt	invoke	(Ljava/lang/Object;)Ljava/lang/Object;

@@ -1,0 +1,2 @@
+org.apache.commons.collections4.comparators.TransformingComparator	compare	(Ljava/lang/Object;Ljava/lang/Object;)I
+org.apache.commons.collections4.functors.InvokerTransformer	transform	(Ljava/lang/Object;)Ljava/lang/Object;

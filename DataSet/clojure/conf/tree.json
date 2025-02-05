@@ -1,0 +1,93 @@
+{
+  "className": "java.util.HashMap",
+  "fieldName": null,
+  "defaultValue": null,
+  "fields": [{
+      "className": "float",
+      "fieldName": "loadFactor",
+      "defaultValue": null,
+      "fields": []
+    },
+    {
+      "className": "java.util.HashMap$Node[]",
+      "fieldName": "table",
+      "defaultValue": null,
+      "fields": [{
+        "className": "java.util.HashMap$Node",
+        "fieldName": "table",
+        "defaultValue": null,
+        "fields": [{
+            "className": "int",
+            "fieldName": "hash",
+            "defaultValue": null,
+            "fields": []
+          },
+          {
+            "className": "clojure.inspector.proxy$javax.swing.table.AbstractTableModel$ff19274a",
+            "fieldName": "key",
+            "defaultValue": null,
+            "fields": [{
+              "className": "clojure.lang.PersistentArrayMap",
+              "fieldName": "__clojureFnMap",
+              "defaultValue": null,
+              "fields": [{
+                "className": "java.lang.Object[]",
+                "fieldName": "array",
+                "defaultValue": null,
+                "fields": [
+                  {
+                    "className": "java.lang.String",
+                    "defaultValue": "hashCode",
+                    "fieldName": "array",
+                    "fields": []
+                  },
+                  {
+                    "className": "clojure.core$comp$fn__4727",
+                    "fieldName": "array",
+                    "defaultValue": null,
+                    "fields": [{
+                        "className": "clojure.main$eval_opt",
+                        "fieldName": "f",
+                        "defaultValue": null,
+                        "fields": []
+                      },
+                      {
+                        "className": "clojure.core$constantly$fn__4614",
+                        "fieldName": "g",
+                        "defaultValue": null,
+                        "fields": [{
+                          "className": "java.lang.String",
+                          "fieldName": "x",
+                          "defaultValue": null,
+                          "fields": []
+                        }]
+                      }
+                    ]
+                  }
+                ]
+              }]
+            }]
+          },
+          {
+            "className": "java.lang.Object",
+            "fieldName": "value",
+            "defaultValue": null,
+            "fields": []
+          },
+          {
+            "className": "java.util.HashMap$Node",
+            "fieldName": "next",
+            "defaultValue": null,
+            "fields": []
+          }
+        ]
+      }]
+    },
+    {
+      "className": "int",
+      "fieldName": "size",
+      "defaultValue": null,
+      "fields": []
+    }
+  ]
+}

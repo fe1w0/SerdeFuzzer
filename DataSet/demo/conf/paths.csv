@@ -1,0 +1,7 @@
+sources.demo.ExpTwo	test	(Ljava/lang/String;)V
+sources.demo.Safe	safe	(Lsources/demo/SafeClass;Lsources/demo/SafeClass;)V
+sources.serialize.UnsafeSerialize	readObject	(Ljava/io/ObjectInputStream;)V
+sources.demo.EvilObject	evil	(Ljava/lang/String;)V
+sources.demo.ExpOne	check	(Lsources/demo/SafeClass;)V
+sources.dynamic.Reflect	exec	(Ljava/lang/String;)V
+sources.dynamic.Reflect	handleMethod	(Ljava/lang/String;)V

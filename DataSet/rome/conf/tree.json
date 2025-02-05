@@ -1,0 +1,154 @@
+{
+    "className": "java.util.HashMap",
+    "fieldName": null,
+    "defaultValue": null,
+    "fields": [
+      {
+        "className": "float",
+        "fieldName": "loadFactor",
+        "defaultValue": null,
+        "fields": []
+      },
+      {
+        "className": "java.util.HashMap$Node[]",
+        "fieldName": "table",
+        "defaultValue": null,
+        "fields": [
+          {
+            "className": "java.util.HashMap$Node",
+            "fieldName": "table",
+            "defaultValue": null,
+            "fields": [
+              {
+                "className": "int",
+                "fieldName": "hash",
+                "defaultValue": null,
+                "fields": []
+              },
+              {
+                "className": "java.lang.Object",
+                "fieldName": "value",
+                "defaultValue": null,
+                "fields": []
+              },
+              {
+                "className": "com.sun.syndication.feed.impl.ObjectBean",
+                "fieldName": "key",
+                "defaultValue": null,
+                "fields": [
+                    {
+                        "className": "com.sun.syndication.feed.impl.EqualsBean",
+                        "fieldName": "_equalsBean",
+                        "defaultValue": null,
+                        "fields": [
+                            {
+                                "className": "java.lang.Class",
+                                "fieldName": "_beanClass",
+                                "defaultValue": null,
+                                "fields": []
+                            },
+                            {
+                                "className": "com.sun.syndication.feed.impl.ToStringBean",
+                                "fieldName": "_obj",
+                                "defaultValue": null,
+                                "fields": [
+                                    {
+                                        "className": "java.lang.Class",
+                                        "fieldName": "_beanClass",
+                                        "defaultValue": null,
+                                        "fields": []
+                                    },
+                                    {
+                                        "className": "java.lang.Object",
+                                        "fieldName": "_obj",
+                                        "defaultValue": null,
+                                        "fields": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "className": "com.sun.syndication.feed.impl.ToStringBean",
+                        "fieldName": "_toStringBean",
+                        "defaultValue": null,
+                        "fields": [
+                            {
+                                "className": "java.lang.Class",
+                                "fieldName": "_beanClass",
+                                "defaultValue": null,
+                                "fields": []
+                            },
+                            {
+                                "className": "com.sun.syndication.feed.impl.ToStringBean",
+                                "fieldName": "_obj",
+                                "defaultValue": null,
+                                "fields": [
+                                    {
+                                        "className": "java.lang.Class",
+                                        "fieldName": "_beanClass",
+                                        "defaultValue": null,
+                                        "fields": []
+                                    },
+                                    {
+                                        "className": "java.lang.Object",
+                                        "fieldName": "_obj",
+                                        "defaultValue": null,
+                                        "fields": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "className": "com.sun.syndication.feed.impl.CloneableBean",
+                        "fieldName": "_cloneableBean",
+                        "defaultValue": null,
+                        "fields": [
+                            {
+                                "className": "com.sun.syndication.feed.impl.ToStringBean",
+                                "fieldName": "_obj",
+                                "defaultValue": null,
+                                "fields": [
+                                    {
+                                        "className": "java.lang.Class",
+                                        "fieldName": "_beanClass",
+                                        "defaultValue": null,
+                                        "fields": []
+                                    },
+                                    {
+                                        "className": "java.lang.Object",
+                                        "fieldName": "_obj",
+                                        "defaultValue": null,
+                                        "fields": []
+                                    }
+                                ]
+                            },
+                            {
+                                "className": "java.util.EmptySet",
+                                "fieldName": "_ignoreProperties",
+                                "defaultValue": null,
+                                "fields": []
+                            }
+                        ]
+                    }
+                ]
+              },
+              {
+                "className": "java.util.HashMap$Node",
+                "fieldName": "next",
+                "defaultValue": null,
+                "fields": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "className": "int",
+        "fieldName": "size",
+        "defaultValue": null,
+        "fields": []
+      }
+    ]
+  }

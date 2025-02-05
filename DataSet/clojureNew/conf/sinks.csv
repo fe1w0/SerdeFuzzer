@@ -1,0 +1,2 @@
+clojure.java.process$start	doInvoke	(Ljava/lang/Object;)Ljava/lang/Object;
+clojure.java.process$start	invokeStatic	(Lclojure/lang/ISeq;)Ljava/lang/Object;

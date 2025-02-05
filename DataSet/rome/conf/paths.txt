@@ -1,0 +1,4 @@
+java.util.HashMap.readObject()
+com.sun.syndication.feed.impl.ObjectBean.hashCode()
+com.sun.syndication.feed.impl.EqualsBean.beanHashCode()
+com.sun.syndication.feed.impl.ToStringBean.toString()
