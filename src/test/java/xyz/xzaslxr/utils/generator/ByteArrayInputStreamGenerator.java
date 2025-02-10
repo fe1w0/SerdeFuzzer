@@ -3,6 +3,7 @@ package xyz.xzaslxr.utils.generator;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
+import edu.berkeley.cs.jqf.fuzz.guidance.TimeoutException;
 import sun.misc.Unsafe;
 import xyz.xzaslxr.utils.setting.PropertyTreeNode;
 import xyz.xzaslxr.utils.setting.ReadConfiguration;
@@ -44,7 +45,7 @@ public class ByteArrayInputStreamGenerator extends Generator<ByteArrayInputStrea
      * @return
      * @param <className>
      */
-    public static <className> Object objectInstance(String className) {
+    public static <className> Object objectInstance(String className) throws Exception {
         className instantiatedObject = (className) new Object();
         try {
             if (className.equals("java.lang.Class")) {
@@ -66,9 +67,8 @@ public class ByteArrayInputStreamGenerator extends Generator<ByteArrayInputStrea
             Unsafe unsafe = (Unsafe) f.get(null);
 
             instantiatedObject = (className) unsafe.allocateInstance(targetClass);
-        } catch (Exception e) {
-
-            e.printStackTrace();
+        } catch (Exception | ExceptionInInitializerError e) {
+                e.printStackTrace();
         }
         return instantiatedObject;
     }
@@ -150,7 +150,7 @@ public class ByteArrayInputStreamGenerator extends Generator<ByteArrayInputStrea
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
             return byteArrayInputStream;
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
         return null;
     }
@@ -184,7 +184,7 @@ public class ByteArrayInputStreamGenerator extends Generator<ByteArrayInputStrea
      * @return
      */
     public IntermediateProduct generateFromPropertyTree(SourceOfRandomness random, PropertyTreeNode propertyTree)
-            throws ClassNotFoundException {
+            throws Exception {
 
         IntermediateProduct iProduct = new IntermediateProduct();
 
@@ -406,8 +406,8 @@ public class ByteArrayInputStreamGenerator extends Generator<ByteArrayInputStrea
         IntermediateProduct iProduct = null;
         try {
             iProduct = generateFromPropertyTree(random, root);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         Object rootObject = null;

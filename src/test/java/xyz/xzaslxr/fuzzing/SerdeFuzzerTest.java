@@ -1,25 +1,30 @@
 package xyz.xzaslxr.fuzzing;
 
-import com.pholser.junit.quickcheck.From;
-import edu.berkeley.cs.jqf.fuzz.Fuzz;
-import edu.berkeley.cs.jqf.fuzz.JQF;
-import edu.berkeley.cs.jqf.instrument.InstrumentingClassLoader;
-import org.junit.After;
-import org.junit.Before;
-
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectStreamClass;
+import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import static org.junit.Assume.assumeFalse;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
-import xyz.xzaslxr.utils.generator.ByteArrayInputStreamGenerator;
 
-import static org.junit.Assume.assumeFalse;
-import static xyz.xzaslxr.driver.SerdeFuzzerDriver.*;
-import static xyz.xzaslxr.utils.generator.ByteArrayInputStreamGenerator.getFieldFromObject;
+import com.pholser.junit.quickcheck.From;
+
+import edu.berkeley.cs.jqf.fuzz.Fuzz;
+import edu.berkeley.cs.jqf.fuzz.JQF;
+import edu.berkeley.cs.jqf.fuzz.guidance.TimeoutException;
+import static xyz.xzaslxr.driver.SerdeFuzzerDriver.fuzzClassLoader;
+import static xyz.xzaslxr.driver.SerdeFuzzerDriver.outputDirectoryName;
+import xyz.xzaslxr.utils.generator.ByteArrayInputStreamGenerator;
 
 /**
  * SerdeFuzzer 用于Fuzzing libraries，主要与JQF进行交互。
@@ -62,8 +67,11 @@ public class SerdeFuzzerTest {
             objectInputStream.readObject();
             byteArrayInputStream.close();
             objectInputStream.close();
+        } catch (TimeoutException e) {
+            assumeFalse(false);
+            throw new FuzzException("This Object is Timeout.");
         } catch (Exception e) {
-            // System.out.println("反序列化时发生异常: " + e.getMessage());
+            System.out.println("反序列化时发生异常: " + e.getMessage());
             // e.printStackTrace();
         }
 
@@ -171,6 +179,9 @@ public class SerdeFuzzerTest {
             objectInputStream.readObject();
             byteArrayInputStream.close();
             objectInputStream.close();
+        } catch (TimeoutException e) {
+            assumeFalse(false);
+            throw new FuzzException("This Object is Timeout.");
         } catch (Exception e) {
             // 记录反序列化时的异常
             // System.out.println("反序列化时发生异常: " + e.getMessage());

@@ -491,7 +491,7 @@ public class ChainsCoverageGuidance implements Guidance {
                 this.numValid++;
             }
 
-            // 当前trial为成功，或者该trial中忽视
+            // 当前 trial为成功，或者该trial中忽视
             if (result == Result.SUCCESS || (result == Result.INVALID && !SAVE_ONLY_VALID)) {
                 IntHashSet responsibilities = computeResponsibilities(valid);
 
@@ -562,9 +562,9 @@ public class ChainsCoverageGuidance implements Guidance {
 
             // Check for possible timeouts every so often
             // 只有当开启 单线程时间设置 和 存在启动时间时，
-            // 才会对 this.branchCount 进行自增计算
+            // Zest 中 (++this.branchCount) % 10_000 == 0 时，才会进行判断
             if (this.singleRunTimeoutMillis > 0 &&
-                    this.runStart != null && (++this.branchCount) % 10_000 == 0) {
+                    this.runStart != null ) {
                 long elapsed = new Date().getTime() - runStart.getTime();
                 if (elapsed > this.singleRunTimeoutMillis) {
                     throw new TimeoutException(elapsed, this.singleRunTimeoutMillis);

@@ -25,8 +25,8 @@ public class CaptureOutputRule implements TestRule {
                 try {
                     base.evaluate(); // 执行测试方法
                 } finally {
-                    System.setOut(originalOut);
                     // System.out.println(outputStreamCaptor.toString());
+                    System.setOut(originalOut);
                 }
             }
         };

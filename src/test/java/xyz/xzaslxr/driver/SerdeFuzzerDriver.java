@@ -60,6 +60,9 @@ public class SerdeFuzzerDriver implements Runnable {
     @CommandLine.Option(names = { "--trials" }, description = "The maximum number of tests allowed.")
     public Long trials = 10_000L;
 
+    @CommandLine.Option(names = {"-rt", "--run-time"}, description = "The maximum running time allowed for a single trial.")
+    public String runTime = "0";
+
     public static ClassLoader fuzzClassLoader = null;
 
     public static List<String> getArtifacts(String targetDirectory) throws IOException {
@@ -93,6 +96,9 @@ public class SerdeFuzzerDriver implements Runnable {
         String testMethodName = null;
         if (fuzzMode.equals("fuzz") || fuzzMode.equals("chains")) {
             testMethodName = "fuzz";
+            if ( Long.valueOf(runTime) > 0) {
+                System.setProperty("jqf.ei.TIMEOUT", runTime);
+            }
         } else if (fuzzMode.equals("report")) {
             testMethodName = "reportFuzz";
             System.setProperty("jqf.repro.logUniqueBranches", "true");

@@ -115,12 +115,6 @@
               "fieldName": "value",
               "defaultValue": null,
               "fields": []
-            },
-            {
-              "className": "java.util.HashMap$Node",
-              "fieldName": "next",
-              "defaultValue": null,
-              "fields": []
             }
           ]
         }
