@@ -4,7 +4,7 @@
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <option name="MAIN_CLASS_NAME" value="xyz.xzaslxr.driver.SerdeFuzzerDriver" />
     <module name="SerdeFuzzer" />
-    <option name="PROGRAM_PARAMETERS" value="-c DataSet/clojure/conf -f DataSet/clojure/jar/i-clojure-1.8.0.jar -m chains -r DataSet/clojure/failures -o DataSet/clojure/fuzz -t 120s --trials=200" />
+    <option name="PROGRAM_PARAMETERS" value="-c DataSet/clojure/conf -f DataSet/clojure/jar/i-clojure-1.8.0.jar -m chains -r DataSet/clojure/fuzz/failures/id_000000 -o DataSet/clojure/fuzz -t 120s --trials=2000" />
     <option name="VM_PARAMETERS" value="--add-opens java.base/java.util=ALL-UNNAMED " />
     <extension name="coverage">
       <pattern>

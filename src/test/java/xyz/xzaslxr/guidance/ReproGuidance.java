@@ -274,7 +274,7 @@ public class ReproGuidance implements Guidance {
                     int hash = b.getIid() * 31 + b.getArm();
                     String str = branchDescCache.get(hash);
                     if (str == null) {
-                        str = String.format("BranchEvent: (%09d) %s#%s():%d [%d]", b.getIid(), b.getContainingClass(), b.getContainingMethodName(),
+                        str = String.format("BranchEvent: (%09d) %s#%s%s:%d [%d] ", b.getIid(), b.getContainingClass(), b.getContainingMethodName(), b.getContainingMethodDesc(),
                                 b.getLineNumber(), b.getArm());
                         branchDescCache.put(hash, str);
                     }
@@ -283,7 +283,7 @@ public class ReproGuidance implements Guidance {
                     CallEvent c = (CallEvent) e;
                     String str = branchDescCache.get(c.getIid());
                     if (str == null) {
-                        str = String.format("CallEvent: (%09d) %s#%s():%d --> %s", c.getIid(), c.getContainingClass(), c.getContainingMethodName(),
+                        str = String.format("CallEvent: (%09d) %s#%s%s:%d --> %s", c.getIid(), c.getContainingClass(), c.getContainingMethodName(), c.getContainingMethodDesc(),
                                 c.getLineNumber(), c.getInvokedMethodName());
                         branchDescCache.put(c.getIid(), str);
                     }

@@ -160,7 +160,7 @@ public class SerdeFuzzerDriver implements Runnable {
             } else if (guidance instanceof ChainsCoverageGuidance) {
                 if (Boolean.getBoolean("jqf.logCoverage")) {
                     System.out.printf("Covered %d edges.%n",
-                            ((ChainsCoverageGuidance) guidance).getChainsCoverage().getNonZeroCount());
+                            ((ChainsCoverageGuidance) guidance).getExploitableCoverage().getNonZeroChainsCount());
                 }
             } else if (guidance instanceof ReproGuidance) {
                 Set<String> coverageSet = ((ReproGuidance) guidance).getBranchesCovered();

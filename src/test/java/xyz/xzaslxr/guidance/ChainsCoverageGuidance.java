@@ -4,9 +4,11 @@ import edu.berkeley.cs.jqf.fuzz.guidance.Guidance;
 import edu.berkeley.cs.jqf.fuzz.guidance.GuidanceException;
 import edu.berkeley.cs.jqf.fuzz.guidance.Result;
 import edu.berkeley.cs.jqf.fuzz.guidance.TimeoutException;
-import edu.berkeley.cs.jqf.fuzz.util.Coverage;
 import edu.berkeley.cs.jqf.fuzz.util.ICoverage;
 import edu.berkeley.cs.jqf.fuzz.util.IOUtils;
+import edu.berkeley.cs.jqf.instrument.tracing.events.BranchEvent;
+import edu.berkeley.cs.jqf.instrument.tracing.events.CallEvent;
+import edu.berkeley.cs.jqf.instrument.tracing.events.ReturnEvent;
 import edu.berkeley.cs.jqf.instrument.tracing.events.TraceEvent;
 import org.eclipse.collections.api.iterator.IntIterator;
 import org.eclipse.collections.api.list.primitive.IntList;
@@ -22,6 +24,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 /**
@@ -98,7 +101,7 @@ public class ChainsCoverageGuidance implements Guidance {
 
     protected String chainsConfigPath;
 
-    protected Map<Integer, String> chainPaths = new ConcurrentHashMap<>();
+    static public Map<Integer, String> chainPaths = new ConcurrentHashMap<>();
 
     /** validityFuzzing -- if true then save valid inputs that increase valid
      * coverage
@@ -107,20 +110,26 @@ public class ChainsCoverageGuidance implements Guidance {
 
     /**
      * Number of saved inputs.
-     *
      * This is usually the same as savedInputs.size(),
      * but we do not really save inputs in TOTALLY_RANDOM mode.
      */
     protected int numSavedInputs = 0;
 
     /** Coverage statistics for a single run. */
-    protected ICoverage runCoverage = new ChainsCoverage();
+    protected ChainsCoverage runCoverage;
 
-    protected ICoverage totalCoverage = new Coverage();
+    protected ChainsCoverage totalCoverage = new ChainsCoverage();
 
-    protected ICoverage validCoverage = new Coverage();
+    protected ChainsCoverage validCoverage = new ChainsCoverage();
 
-    protected ICoverage chainsCoverage = new ChainsCoverage();
+    protected ChainsCoverage chainsCoverage = new ChainsCoverage(chainPaths);
+
+    public ChainsCoverage getExploitableCoverage() {
+        return exploitableCoverage;
+    }
+
+    protected ChainsCoverage exploitableCoverage = null;
+
 
     protected int maxCoverage = 0;
 
@@ -193,6 +202,34 @@ public class ChainsCoverageGuidance implements Guidance {
      */
     protected File allInputsDirectory;
 
+    /** A system console, which is non-null only if STDOUT is a console. */
+    // protected PrintStream console = System.console();
+
+    protected PrintStream console = System.out;
+
+    /** Time at last stats refresh. */
+    protected Date lastRefreshTime = startTime;
+
+    /**
+     * Use libFuzzer like output instead of AFL like stats screen
+     * (https://llvm.org/docs/LibFuzzer.html#output)
+     **/
+    protected final boolean LIBFUZZER_COMPAT_OUTPUT = Boolean.getBoolean("jqf.ei.LIBFUZZER_COMPAT_OUTPUT");
+
+    /** Minimum amount of time (in millis) between two stats refreshes. */
+    protected final long STATS_REFRESH_TIME_PERIOD = 300;
+
+    /** Total execs at last stats refresh. */
+    protected long lastNumTrials = 0;
+
+    /** The file contianing the coverage information */
+    protected File coverageFile;
+
+    /** Whether to hide fuzzing statistics **/
+    protected final boolean QUIET_MODE = Boolean.getBoolean("jqf.ei.QUIET_MODE");
+
+    /** The file where saved plot data is written. */
+    protected File statsFile;
 
     // ---------- Thread Handling ----------
 
@@ -315,7 +352,7 @@ public class ChainsCoverageGuidance implements Guidance {
                 throw new IllegalArgumentException("Invalid timeout duration: " + timeout);
             }
         }
-        
+
     }
 
 
@@ -331,15 +368,26 @@ public class ChainsCoverageGuidance implements Guidance {
         this.savedCorpusDirectory = IOUtils.createDirectory(outputDirectory, "corpus");
         this.savedFailuresDirectory = IOUtils.createDirectory(outputDirectory, "failures");
 
+        this.statsFile = new File(outputDirectory, "plot_data");
         this.logFile = new File(outputDirectory, "fuzz.log");
+        this.coverageFile = new File(outputDirectory, "coverage_hash");
 
+        statsFile.delete();
         logFile.delete();
+        coverageFile.delete();
         for (File file : savedCorpusDirectory.listFiles()) {
             file.delete();
         }
         for (File file : savedFailuresDirectory.listFiles()) {
             file.delete();
         }
+
+        appendLineToFile(statsFile, getStatNames());
+    }
+
+    protected String getStatNames() {
+        return "# unix_time, cycles_done, cur_path, paths_total, pending_total, " +
+                "pending_favs, map_size, unique_crashes, unique_hangs, max_depth, execs_per_sec, valid_inputs, invalid_inputs, valid_cov, all_covered_probes, valid_covered_probes";
     }
 
 
@@ -364,7 +412,7 @@ public class ChainsCoverageGuidance implements Guidance {
                 && numTrials < maxTrials) {
             return true;
         } else {
-            // displayStats(true);
+            displayStats(true);
             // infoLog("failures: %d", failures);
             // infoLog("numTrials: %s", numTrials);
             // if (failures != 0 ) {
@@ -385,7 +433,7 @@ public class ChainsCoverageGuidance implements Guidance {
      * @return java.io.InputStream
      */
     @Override
-    public InputStream getInput() throws IllegalStateException, GuidanceException {
+    public synchronized InputStream getInput() throws IllegalStateException, GuidanceException {
         // 参考 ZestGuidance 代码，需要考虑到 多线程的问题
         conditionallySynchronize(multiThreaded, () -> {
             // 初始化
@@ -476,7 +524,10 @@ public class ChainsCoverageGuidance implements Guidance {
      * @param error    the error thrown during the trial, or <code>null</code>
      */
     @Override
-    public void handleResult(Result result, Throwable error) throws GuidanceException {
+    public synchronized void handleResult(Result result, Throwable error) throws GuidanceException {
+        // if (runCoverage.getChainsCodeCounter().getNonZeroSize() > 3){
+        //     System.out.println("demo");
+        // }
         conditionallySynchronize(multiThreaded, () -> {
             // Stop timeout handling
             this.runStart = null;
@@ -504,10 +555,21 @@ public class ChainsCoverageGuidance implements Guidance {
                     // Todo: 理解 gc 的作用
                     currentInput.gc();
 
+                    infoLog("Saving new input (at run %d): " +
+                                    "input #%d " +
+                                    "of size %d; " +
+                                    "reason = %s",
+                            numTrials,
+                            savedInputs.size(),
+                            currentInput.size(),
+                            why);
+
                     // Save input to queue and to disk
                     final String reason = why;
 
                     GuidanceException.wrap(() -> saveCurrentInput(responsibilities, reason));
+
+                    updateCoverageFile();
                 }
             } else if (result == Result.FAILURE || result == Result.TIMEOUT) {
                 // 需要注意的是:
@@ -523,6 +585,9 @@ public class ChainsCoverageGuidance implements Guidance {
 
                 if (rootCause instanceof FuzzException) {
                     failures++;
+                    if (exploitableCoverage == null) {
+                        exploitableCoverage = runCoverage.copy();
+                    }
                 }
 
                 // Attempt to add this to the set of unique failures
@@ -557,8 +622,25 @@ public class ChainsCoverageGuidance implements Guidance {
      */
     protected void handleEvent(TraceEvent e) {
         conditionallySynchronize(multiThreaded, () -> {
+            // debug
+            // if (e instanceof ReturnEvent || (e instanceof BranchEvent)) {
+            //     String tmp = e.getContainingClass() + "#" + (e).getContainingMethodName() + e.getContainingMethodDesc();
+            //     if (tmp.contains("core$comp$fn__4727")){
+            //         System.out.println("demo");
+            //     }
+            // } else if (e instanceof CallEvent) {
+            //     String tmp = ((CallEvent) e).getInvokedMethodName();
+            //     if (tmp.contains("core$comp$fn__4727")){
+            //         System.out.println("demo");
+            //     }
+            // }
+
+            // if (runCoverage.getChainsCodeCounter().getNonZeroSize() > 3){
+            //     System.out.println("demo");
+            // }
+
             // Collect totalCoverage and ChainsCoverage
-            ((ChainsCoverage) runCoverage).handleEvent(e);
+            runCoverage.handleEvent(e);
 
             // Check for possible timeouts every so often
             // 只有当开启 单线程时间设置 和 存在启动时间时，
@@ -584,26 +666,26 @@ public class ChainsCoverageGuidance implements Guidance {
      * @param valid
      * @return IntHashSet
      */
-    protected IntHashSet computeResponsibilities(boolean valid) {
+    protected synchronized IntHashSet computeResponsibilities(boolean valid) {
         IntHashSet result = new IntHashSet();
 
         // newValidCoverage 中保存着之前 totalCoverage中没有的新的edges信息
         IntList newCoverage = runCoverage.computeNewCoverage(totalCoverage);
-        if (!newCoverage.isEmpty()) {
+        if (newCoverage.size() > 0) {
             result.addAll(newCoverage);
         }
 
         // 如果当前result为有效的，则同样更新validCoverage
         if (valid) {
             IntList newValidCoverage = runCoverage.computeNewCoverage(validCoverage);
-            if (!newValidCoverage.isEmpty()) {
+            if (newValidCoverage.size() > 0) {
                 result.addAll(newValidCoverage);
             }
         }
 
         // 计算当前 runCoverage 中覆盖了哪些新的 ChainsPath
-        IntList newChainsCoverage = ((ChainsCoverage)runCoverage).computeNewCoveredChainsPath(chainsCoverage);
-        if (!newChainsCoverage.isEmpty()) {
+        IntList newChainsCoverage = runCoverage.computeNewCoveredChainsPath(chainsCoverage);
+        if (newChainsCoverage.size() > 0) {
             result.addAll(newChainsCoverage);
         }
 
@@ -632,7 +714,11 @@ public class ChainsCoverageGuidance implements Guidance {
 
         // Todo: 添加 chainsCoverage.updateBits
         // 当发现新的且有效的chainCoverage时，刷新 chainsCoverage
-        boolean chainsCoverageBitsUpdate = ((ChainsCoverage)chainsCoverage).updateChainsBits((ChainsCoverage) runCoverage);
+        boolean chainsCoverageBitsUpdate = chainsCoverage.updateChainsBits(runCoverage);
+        int nonZeroAfterChains = chainsCoverage.getNonZeroChainsCount();
+        if ( nonZeroAfterChains > maxChainsCoverage) {
+            maxChainsCoverage = nonZeroAfterChains;
+        }
 
         // Coverage after
         int nonZeroAfter = totalCoverage.getNonZeroCount();
@@ -667,12 +753,127 @@ public class ChainsCoverageGuidance implements Guidance {
 
     // -------- Stats --------
 
+    protected String millisToDuration(long millis) {
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis % TimeUnit.MINUTES.toMillis(1));
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(millis % TimeUnit.HOURS.toMillis(1));
+        long hours = TimeUnit.MILLISECONDS.toHours(millis);
+        String result = "";
+        if (hours > 0) {
+            result = hours + "h ";
+        }
+        if (hours > 0 || minutes > 0) {
+            result += minutes + "m ";
+        }
+        result += seconds + "s";
+        return result;
+    }
+
     /**
      * 展示Fuzzing的现状
      * @param force
      */
-    private void displayStats(boolean force) {
+    protected synchronized void displayStats(boolean force) {
+        System.setOut(System.out);
+        Date now = new Date();
+        long intervalMilliseconds = now.getTime() - lastRefreshTime.getTime();
+        intervalMilliseconds = Math.max(1, intervalMilliseconds);
+        if (intervalMilliseconds < STATS_REFRESH_TIME_PERIOD && !force) {
+            return;
+        }
+        long interlvalTrials = numTrials - lastNumTrials;
+        long intervalExecsPerSec = interlvalTrials * 1000L;
+        double intervalExecsPerSecDouble = interlvalTrials * 1000.0;
+        if (intervalMilliseconds != 0) {
+            intervalExecsPerSec = interlvalTrials * 1000L / intervalMilliseconds;
+            intervalExecsPerSecDouble = interlvalTrials * 1000.0 / intervalMilliseconds;
+        }
+        lastRefreshTime = now;
+        lastNumTrials = numTrials;
+        long elapsedMilliseconds = now.getTime() - startTime.getTime();
+        elapsedMilliseconds = Math.max(1, elapsedMilliseconds);
+        long execsPerSec = numTrials * 1000L / elapsedMilliseconds;
 
+        String currentParentInputDesc;
+        if (seedInputs.size() > 0 || savedInputs.isEmpty()) {
+            currentParentInputDesc = "<seed>";
+        } else {
+            Input currentParentInput = savedInputs.get(currentParentInputIdx);
+            currentParentInputDesc = currentParentInputIdx + " ";
+            currentParentInputDesc += currentParentInput.isFavored() ? "(favored)" : "(not favored)";
+            currentParentInputDesc += " {" + numChildrenGeneratedForCurrentParentInput +
+                    "/" + getTargetChildrenForParent(currentParentInput) + " mutations}";
+        }
+
+        int nonZeroCount = exploitableCoverage.getNonZeroCount();
+        double nonZeroFraction = nonZeroCount * 100.0 / exploitableCoverage.size();
+        int nonZeroValidCount = exploitableCoverage.getNonZeroCount();
+        double nonZeroValidFraction = nonZeroValidCount * 100.0 / exploitableCoverage.size();
+        int nonZeroChainsCount = exploitableCoverage.getNonZeroChainsCount();
+        double nonZeroChainsFraction = nonZeroChainsCount * 100.0 / exploitableCoverage.getChainPaths().size();
+
+        if (console != null) {
+            if (LIBFUZZER_COMPAT_OUTPUT) {
+                console.printf("#%,d\tNEW\tcov: %,d exec/s: %,d L: %,d\n", numTrials, nonZeroValidCount,
+                        intervalExecsPerSec, currentInput.size());
+            } else if (!QUIET_MODE) {
+                console.printf("\033[2J");
+                console.printf("\033[H");
+                console.printf(this.getTitle() + "\n");
+                if (this.testName != null) {
+                    console.printf("Test name:            %s\n", this.testName);
+                }
+
+                String instrumentationType = "Janala";
+                // if (this.runCoverage instanceof FastNonCollidingCoverage) {
+                //     instrumentationType = "Fast";
+                // }
+                console.printf("Instrumentation:      %s\n", instrumentationType);
+                console.printf("Results directory:    %s\n", this.outputDirectory.getAbsolutePath());
+                console.printf("Elapsed time:         %s (%s)\n", millisToDuration(elapsedMilliseconds),
+                        maxDurationMillis == Long.MAX_VALUE ? "no time limit"
+                                : ("max " + millisToDuration(maxDurationMillis)));
+                console.printf("Number of executions: %,d (%s)\n", numTrials,
+                        maxTrials == Long.MAX_VALUE ? "no trial limit" : ("max " + maxTrials));
+                console.printf("Valid inputs:         %,d (%.2f%%)\n", numValid, numValid * 100.0 / numTrials);
+                console.printf("Cycles completed:     %d\n", cyclesCompleted);
+                console.printf("Unique failures:      %,d\n", uniqueFailures.size());
+                console.printf("Queue size:           %,d (%,d favored last cycle)\n", savedInputs.size(),
+                        numFavoredLastCycle);
+                console.printf("Current parent input: %s\n", currentParentInputDesc);
+                console.printf("Execution speed:      %,d/sec now | %,d/sec overall\n", intervalExecsPerSec,
+                        execsPerSec);
+                console.printf("Total coverage:       %,d branches (%.2f%% of map)\n", nonZeroCount, nonZeroFraction);
+                console.printf("Valid coverage:       %,d branches (%.2f%% of map)\n", nonZeroValidCount,
+                        nonZeroValidFraction);
+                console.printf("Chains coverage:       %,d branches (%.2f%% of map)\n", nonZeroChainsCount, nonZeroChainsFraction);
+            }
+        }
+
+        String plotData = String.format("%d, %d, %d, %d, %d, %d, %.2f%%, %d, %d, %d, %.2f, %d, %d, %.2f%%, %d, %d",
+                TimeUnit.MILLISECONDS.toSeconds(now.getTime()), cyclesCompleted, currentParentInputIdx,
+                numSavedInputs, 0, 0, nonZeroFraction, uniqueFailures.size(), 0, 0, intervalExecsPerSecDouble,
+                numValid, numTrials - numValid, nonZeroValidFraction, nonZeroCount, nonZeroValidCount);
+        appendLineToFile(statsFile, plotData);
+    }
+
+    /** Updates the data in the coverage file */
+    protected void updateCoverageFile() {
+        try {
+            PrintWriter pw = new PrintWriter(coverageFile);
+            pw.println(exploitableCoverage.toString());
+            pw.println("Hash code: " + exploitableCoverage.hashCode());
+            // pw.println(getChainsCoverage().toString());
+            // pw.println("Hash code: " + getChainsCoverage().hashCode());
+            pw.close();
+        } catch (FileNotFoundException ignore) {
+            throw new GuidanceException(ignore);
+        }
+    }
+
+    /* Returns the banner to be displayed on the status screen */
+    protected String getTitle() {
+        return "Directed Greybox Fuzzing with Chains Coverage Guidance\n" +
+                "--------------------------\n";
     }
 
     // -------- Generate Input Part -------
@@ -725,7 +926,7 @@ public class ChainsCoverageGuidance implements Guidance {
         return target;
     }
 
-    protected void saveCurrentInput(IntHashSet responsibilities, String why) throws IOException {
+    protected synchronized void saveCurrentInput(IntHashSet responsibilities, String why) throws IOException {
 
         // First, save to disk (note: we issue IDs to everyone, but only write to disk
         // if valid)
@@ -830,7 +1031,7 @@ public class ChainsCoverageGuidance implements Guidance {
      *
      * </p>
      */
-    protected void completeCycle() {
+    protected synchronized void completeCycle() {
         // Increment cycle count
         // 循环计数++
         cyclesCompleted++;
@@ -848,16 +1049,18 @@ public class ChainsCoverageGuidance implements Guidance {
                 numFavoredLastCycle++;
             }
         }
-        int totalCoverageCount = totalCoverage.getNonZeroCount() + ((ChainsCoverage)chainsCoverage).getNonZeroChainsCount();
+        // int totalCoverageCount = chainsCoverage.getNonZeroCount();
         // int totalCoverageCount = totalCoverage.getNonZeroCount();
-        infoLog("Total %d branches covered", totalCoverageCount);
-        if (sumResponsibilities != totalCoverageCount) {
-            if (multiThreaded) {
-                infoLog("Warning: other threads are adding coverage between test executions");
-            } else {
-                throw new AssertionError("Responsibility mismatch");
-            }
-        }
+        // infoLog("Total %d branches covered", totalCoverageCount);
+
+        // Todo: 出现异常
+        // if (sumResponsibilities != totalCoverageCount) {
+        //     if (multiThreaded) {
+        //         infoLog("Warning: other threads are adding coverage between test executions");
+        //     } else {
+        //         throw new AssertionError("Responsibility mismatch");
+        //     }
+        // }
 
         // Break log after cycle
         infoLog("\n\n\n");
@@ -891,5 +1094,5 @@ public class ChainsCoverageGuidance implements Guidance {
         return totalCoverage;
     }
 
-    public ICoverage getChainsCoverage() {return chainsCoverage;}
+    public ChainsCoverage getChainsCoverage() {return chainsCoverage;}
 }

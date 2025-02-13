@@ -75,8 +75,8 @@ public class ASMJarAnalyzer {
         inputFile = "/Users/fe1w0/Project/SoftWareAnalysis/Fuzzing/SerdeFuzzer/DataSet/clojure/conf/paths.txt";
         jarPath = "/Users/fe1w0/Project/SoftWareAnalysis/Fuzzing/SerdeFuzzer/DataSet/clojure/jar/clojure-1.8.0.jar";
 
-        inputFile = "/Users/fe1w0/Project/SoftWareAnalysis/Fuzzing/SerdeFuzzer/DataSet/cc5/conf/paths.txt";
-        jarPath = "/Users/fe1w0/Project/SoftWareAnalysis/Fuzzing/SerdeFuzzer/DataSet/cc5/jar/commons-collections-3.1.jar";
+        // inputFile = "/Users/fe1w0/Project/SoftWareAnalysis/Fuzzing/SerdeFuzzer/DataSet/cc5/conf/paths.txt";
+        // jarPath = "/Users/fe1w0/Project/SoftWareAnalysis/Fuzzing/SerdeFuzzer/DataSet/cc5/jar/commons-collections-3.1.jar";
 
         String[] methodNames = new String[0];
 
